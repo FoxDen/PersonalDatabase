@@ -48,8 +48,7 @@ public class GUIDatabase {
 	private JTable table;
 	private JPanel descriptionPanel,searchBarPanel, outerPanel; //outermost panels.
 	private JPanel searchPanel, viewMediaPanel, addNewPanel, recentlyViewed, tableDisplay, mediaInfo; //innermost panels
-	private JPanel searchMedia = new JPanel();
-	private JPanel addMedia = new JPanel();
+	private SearchEditEnter window = new SearchEditEnter();
 
 	/**
 	 * Launch the application.
@@ -109,7 +108,7 @@ public class GUIDatabase {
 		fullSearch.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				mediaInfo.setVisible(false);
-				searchMedia.setVisible(true);
+				window.setVisible(true);
 			}
 		});
 		fullSearch.addComponentListener(new ComponentAdapter() {
@@ -134,7 +133,7 @@ public class GUIDatabase {
 		addNew.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				mediaInfo.setVisible(false);
-				addMedia.setVisible(true);
+				window.setVisible(true);
 			}
 		});
 		addNew.addComponentListener(new ComponentAdapter() {
@@ -143,6 +142,14 @@ public class GUIDatabase {
 			}
 		});
 		addNewPanel.add(addNew);
+		
+		JPanel panel = new JPanel();
+		panel.setBackground(Color.PINK);
+		searchBarPanel.add(panel);
+		
+		JButton btnEditEntry = new JButton("Edit Entry");
+		btnEditEntry.setBackground(new Color(255, 245, 238));
+		panel.add(btnEditEntry);
 		
 		Component verticalStrut = Box.createVerticalStrut(20);
 		verticalStrut.setBackground(new Color(255, 153, 0));
@@ -218,11 +225,6 @@ public class GUIDatabase {
 		recentlyViewed = new JPanel();
 		recentlyViewed.setForeground(Color.WHITE);
 		recentlyViewed.setBorder(new LineBorder(new Color(205, 92, 92)));
-		recentlyViewed.add(searchMedia);
-		recentlyViewed.add(addMedia);
-		
-		searchMedia.setVisible(false);
-		addMedia.setVisible(false);
 		
 		tableDisplay = new JPanel();
 		tableDisplay.setBackground(new Color(255, 240, 245));
@@ -379,7 +381,7 @@ public class GUIDatabase {
 		mediaInfo.add(authorLabel);
 		recentlyViewed.setLayout(gl_recentlyViewed);
 		
-		JLabel[] storageArray = {genreLabel1, genreLabel2, genreLabel3, genreLabel4, genreLabel5, genreLabel6};
+		//JLabel[] storageArray = {genreLabel1, genreLabel2, genreLabel3, genreLabel4, genreLabel5, genreLabel6};
 		
 		table = new JTable();
 		tableDisplay.add(table);
