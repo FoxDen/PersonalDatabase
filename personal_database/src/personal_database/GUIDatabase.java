@@ -48,7 +48,9 @@ public class GUIDatabase {
 	private JTable table;
 	private JPanel descriptionPanel,searchBarPanel, outerPanel; //outermost panels.
 	private JPanel searchPanel, viewMediaPanel, addNewPanel, recentlyViewed, tableDisplay, mediaInfo; //innermost panels
-	private SearchEditEnter window = new SearchEditEnter();
+	private SearchEditEnter addEditWindow = new SearchEditEnter();
+	private Search searchWindow = new Search();
+	private JButton btnDeleteEntry, btnViewSummary, addNew, fullSearch;
 
 	/**
 	 * Launch the application.
@@ -81,7 +83,7 @@ public class GUIDatabase {
 		frmDatabase.getContentPane().setBackground(new Color(250, 128, 114));
 		frmDatabase.setForeground(new Color(153, 51, 0));
 		frmDatabase.setTitle("Database for Anime, Cartoons, Manga and Vidya");
-		frmDatabase.setBounds(100, 100, 725, 450);
+		frmDatabase.setBounds(100, 100, 725, 439);
 		frmDatabase.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmDatabase.setBackground(new Color(204, 51, 0));
 		
@@ -103,12 +105,11 @@ public class GUIDatabase {
 			searchBarPanel.add(searchPanel);
 			searchPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		
-		JButton fullSearch = new JButton("Search");
+		fullSearch = new JButton("Search");
 		fullSearch.setBackground(new Color(255, 245, 238));
 		fullSearch.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				mediaInfo.setVisible(false);
-				window.setVisible(true);
+				searchWindow.setVisible(true);
 			}
 		});
 		fullSearch.addComponentListener(new ComponentAdapter() {
@@ -128,12 +129,12 @@ public class GUIDatabase {
 		searchBarPanel.add(addNewPanel);
 		
 		
-		JButton addNew = new JButton("Add New Media");
+		addNew = new JButton("Add/Edit New Media");
 		addNew.setBackground(new Color(255, 245, 238));
 		addNew.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				mediaInfo.setVisible(false);
-				window.setVisible(true);
+				mediaInfo.setVisible(true);
+				addEditWindow.setVisible(true);
 			}
 		});
 		addNew.addComponentListener(new ComponentAdapter() {
@@ -143,13 +144,18 @@ public class GUIDatabase {
 		});
 		addNewPanel.add(addNew);
 		
-		JPanel panel = new JPanel();
-		panel.setBackground(Color.PINK);
-		searchBarPanel.add(panel);
+		JPanel deletePanel = new JPanel();
+		deletePanel.setBackground(Color.PINK);
+		searchBarPanel.add(deletePanel);
 		
-		JButton btnEditEntry = new JButton("Edit Entry");
-		btnEditEntry.setBackground(new Color(255, 245, 238));
-		panel.add(btnEditEntry);
+		btnDeleteEntry = new JButton("Delete Current Entry");
+		btnDeleteEntry.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				mediaInfo.setVisible(true);
+			}
+		});
+		btnDeleteEntry.setBackground(new Color(255, 245, 238));
+		deletePanel.add(btnDeleteEntry);
 		
 		Component verticalStrut = Box.createVerticalStrut(20);
 		verticalStrut.setBackground(new Color(255, 153, 0));
@@ -248,9 +254,9 @@ public class GUIDatabase {
 						.addGroup(gl_recentlyViewed.createSequentialGroup()
 							.addGap(32)
 							.addComponent(IMAGE)))
-					.addPreferredGap(ComponentPlacement.RELATED, 10, Short.MAX_VALUE)
-					.addComponent(mediaInfo, GroupLayout.PREFERRED_SIZE, 390, GroupLayout.PREFERRED_SIZE)
-					.addGap(21))
+					.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+					.addComponent(mediaInfo, GroupLayout.PREFERRED_SIZE, 381, GroupLayout.PREFERRED_SIZE)
+					.addGap(30))
 		);
 		gl_recentlyViewed.setVerticalGroup(
 			gl_recentlyViewed.createParallelGroup(Alignment.LEADING)
@@ -288,6 +294,7 @@ public class GUIDatabase {
 		mediaInfo.add(authorDev);
 		
 		JCheckBox chckbxNewCheckBox = new JCheckBox("Completed?");
+		chckbxNewCheckBox.setBackground(new Color(255, 240, 245));
 		chckbxNewCheckBox.setFont(new Font("Consolas", Font.PLAIN, 10));
 		chckbxNewCheckBox.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent arg0) {
@@ -309,7 +316,7 @@ public class GUIDatabase {
 		sl_mediaInfo.putConstraint(SpringLayout.SOUTH, genre, 0, SpringLayout.SOUTH, releaseDate);
 		mediaInfo.add(genre);
 		
-		JButton btnViewSummary = new JButton("View Summary");
+		btnViewSummary = new JButton("View Summary");
 		btnViewSummary.setBackground(new Color(255, 245, 238));
 		sl_mediaInfo.putConstraint(SpringLayout.WEST, btnViewSummary, 47, SpringLayout.EAST, chckbxNewCheckBox);
 		sl_mediaInfo.putConstraint(SpringLayout.SOUTH, btnViewSummary, -10, SpringLayout.SOUTH, mediaInfo);
@@ -340,19 +347,19 @@ public class GUIDatabase {
 		
 		JLabel genreLabel4 = new JLabel("New label");
 		sl_mediaInfo.putConstraint(SpringLayout.NORTH, genreLabel4, -1, SpringLayout.NORTH, releaseDate);
+		sl_mediaInfo.putConstraint(SpringLayout.WEST, genreLabel4, 13, SpringLayout.EAST, genreLabel1);
 		genreLabel4.setFont(new Font("Tahoma", Font.PLAIN, 9));
 		mediaInfo.add(genreLabel4);
 		
 		JLabel genreLabel5 = new JLabel("New label");
-		sl_mediaInfo.putConstraint(SpringLayout.WEST, genreLabel5, 26, SpringLayout.EAST, genreLabel2);
-		sl_mediaInfo.putConstraint(SpringLayout.WEST, genreLabel4, 0, SpringLayout.WEST, genreLabel5);
 		sl_mediaInfo.putConstraint(SpringLayout.NORTH, genreLabel5, -1, SpringLayout.NORTH, authorDev);
+		sl_mediaInfo.putConstraint(SpringLayout.EAST, genreLabel5, 0, SpringLayout.EAST, genreLabel4);
 		genreLabel5.setFont(new Font("Tahoma", Font.PLAIN, 9));
 		mediaInfo.add(genreLabel5);
 		
 		JLabel genreLabel6 = new JLabel("New label");
 		sl_mediaInfo.putConstraint(SpringLayout.NORTH, genreLabel6, 0, SpringLayout.NORTH, chckbxNewCheckBox);
-		sl_mediaInfo.putConstraint(SpringLayout.WEST, genreLabel6, 26, SpringLayout.EAST, genreLabel3);
+		sl_mediaInfo.putConstraint(SpringLayout.EAST, genreLabel6, 0, SpringLayout.EAST, genreLabel4);
 		genreLabel6.setFont(new Font("Tahoma", Font.PLAIN, 9));
 		mediaInfo.add(genreLabel6);
 		
@@ -386,12 +393,12 @@ public class GUIDatabase {
 		table = new JTable();
 		tableDisplay.add(table);
 		SpringLayout sl_outerPanel = new SpringLayout();
-		sl_outerPanel.putConstraint(SpringLayout.EAST, recentlyViewed, 523, SpringLayout.WEST, outerPanel);
-		sl_outerPanel.putConstraint(SpringLayout.WEST, tableDisplay, 11, SpringLayout.WEST, outerPanel);
-		sl_outerPanel.putConstraint(SpringLayout.EAST, tableDisplay, -11, SpringLayout.EAST, outerPanel);
 		sl_outerPanel.putConstraint(SpringLayout.NORTH, recentlyViewed, 12, SpringLayout.NORTH, outerPanel);
 		sl_outerPanel.putConstraint(SpringLayout.WEST, recentlyViewed, 11, SpringLayout.WEST, outerPanel);
-		sl_outerPanel.putConstraint(SpringLayout.SOUTH, recentlyViewed, 137, SpringLayout.NORTH, outerPanel);
+		sl_outerPanel.putConstraint(SpringLayout.SOUTH, recentlyViewed, -6, SpringLayout.NORTH, tableDisplay);
+		sl_outerPanel.putConstraint(SpringLayout.EAST, recentlyViewed, 0, SpringLayout.EAST, tableDisplay);
+		sl_outerPanel.putConstraint(SpringLayout.WEST, tableDisplay, 11, SpringLayout.WEST, outerPanel);
+		sl_outerPanel.putConstraint(SpringLayout.EAST, tableDisplay, -11, SpringLayout.EAST, outerPanel);
 		sl_outerPanel.putConstraint(SpringLayout.NORTH, tableDisplay, 143, SpringLayout.NORTH, outerPanel);
 		sl_outerPanel.putConstraint(SpringLayout.SOUTH, tableDisplay, 363, SpringLayout.NORTH, outerPanel);
 		

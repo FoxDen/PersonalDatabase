@@ -23,10 +23,13 @@ import javax.swing.JCheckBox;
 import javax.swing.JTextArea;
 
 import java.awt.Dimension;
-import java.io.IOException;
 
 public class SearchEditEnter extends JDialog {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 4003433170350177974L;
 	private final JPanel contentPanel = new JPanel();
 	private JComboBox<String> mediaTypeBox;
 	private JTextField titleField;
@@ -34,6 +37,7 @@ public class SearchEditEnter extends JDialog {
 	private JTextField artworkField;
 	private JTextField releaseField;
 	private String[] mediaTypes = {"Select Media","Cartoon", "Anime", "Game", "Manga"};
+	@SuppressWarnings("rawtypes")
 	private JComboBox addedGenreBox;
 	private ArrayList<String> addedGenres = new ArrayList<String>();
 	private String[] genreTypes = {"Horror", "Action", "Shojo", "Shonen", "Seinen", "Tragedy", "Angst", "Yaoi", "Yuri", "Genderbending", "Ecchi", "Psychological", 
@@ -69,6 +73,7 @@ public class SearchEditEnter extends JDialog {
 	/**
 	 * Create the dialog.
 	 */
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public SearchEditEnter() {
 		setTitle("Add or Edit Entries");
 		getContentPane().setBackground(new Color(205, 92, 92));
@@ -76,7 +81,7 @@ public class SearchEditEnter extends JDialog {
 		getContentPane().setLayout(new BorderLayout());
 		
 		JPanel SearchEdit = new JPanel();
-		SearchEdit.setBackground(new Color(205, 92, 92));
+		SearchEdit.setBackground(new Color(255, 153, 153));
 		getContentPane().add(SearchEdit, BorderLayout.SOUTH);
 		
 		JButton addButton = new JButton("Add");
@@ -104,11 +109,7 @@ public class SearchEditEnter extends JDialog {
 		JButton EditButton = new JButton("Edit");
 		EditButton.setBackground(new Color(255, 245, 238));
 		SearchEdit.add(EditButton);
-		
-		JButton deleteButton = new JButton("Delete");
-		deleteButton.setBackground(new Color(255, 245, 238));
-		SearchEdit.add(deleteButton);
-		contentPanel.setBackground(new Color(205, 92, 92));
+		contentPanel.setBackground(new Color(255, 153, 153));
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		{
@@ -168,6 +169,7 @@ public class SearchEditEnter extends JDialog {
 		JButton addGenreButton = new JButton("Add");
 		addGenreButton.setBackground(new Color(255, 245, 238));
 		addGenreButton.addActionListener(new ActionListener() {
+			@SuppressWarnings(value = { })
 			public void actionPerformed(ActionEvent arg0) {
 				if(mediaTypeBox.getSelectedIndex()==3){
 					String genre = (String) JOptionPane.showInputDialog(contentPanel, "Genre to be Added:","Added!",JOptionPane.QUESTION_MESSAGE, null, gameGenreTypes, gameGenreTypes[0]);
@@ -218,7 +220,7 @@ public class SearchEditEnter extends JDialog {
 		
 		JCheckBox chckbxNewCheckBox = new JCheckBox("Complete?");
 		chckbxNewCheckBox.setForeground(Color.DARK_GRAY);
-		chckbxNewCheckBox.setBackground(new Color(205, 92, 92));
+		chckbxNewCheckBox.setBackground(new Color(255, 153, 153));
 		
 		currentChapter = new JLabel("Init");
 		urlLabel = new JLabel("Init");
