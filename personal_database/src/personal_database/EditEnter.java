@@ -52,7 +52,7 @@ public class EditEnter extends JDialog {
 	private JLabel authorLabel;
 	JTextArea textArea;
 	private JLabel urlLabel;
-	
+
 	public void setVisibility(JLabel a, JTextField b, boolean c){
 		a.setVisible(c);
 		b.setVisible(c);
@@ -110,9 +110,10 @@ public class EditEnter extends JDialog {
 		JButton EditButton = new JButton("Edit");
 		EditButton.setBackground(new Color(255, 245, 238));
 		SearchEdit.add(EditButton);
+
 		contentPanel.setBackground(new Color(255, 153, 153));
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
-		getContentPane().add(contentPanel, BorderLayout.NORTH);
+		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		{
 			mediaTypeBox = new JComboBox(mediaTypes);
 			mediaTypeBox.setFont(UIManager.getFont("Button.font"));
@@ -151,11 +152,10 @@ public class EditEnter extends JDialog {
 					 }
 				}
 			});
-			mediaTypeBox.setForeground(new Color(112, 128, 144));
+			mediaTypeBox.setForeground(new Color(105, 105, 105));
 			mediaTypeBox.setBackground(new Color(204, 153, 153));
 		}
 		
-		//comboBox.add(st);
 		
 		JLabel titleLabel = new JLabel("Title");
 		
@@ -174,11 +174,11 @@ public class EditEnter extends JDialog {
 			@SuppressWarnings(value = { })
 			public void actionPerformed(ActionEvent arg0) {
 				if(mediaTypeBox.getSelectedIndex()==3){
-					String genre = (String) JOptionPane.showInputDialog(contentPanel, "Genre to be Added:","Added!",JOptionPane.QUESTION_MESSAGE, null, gameGenreTypes, gameGenreTypes[0]);
+					String genre = (String) JOptionPane.showInputDialog(contentPanel, "Genre to be Added:","Add Genre",JOptionPane.QUESTION_MESSAGE, null, gameGenreTypes, gameGenreTypes[0]);
 					addedGenres.add(genre);
 					addedGenreBox.addItem(genre);
 				} else{
-					String genre = (String) JOptionPane.showInputDialog(contentPanel, "Genre to be Added:","Added!",JOptionPane.QUESTION_MESSAGE, null, genreTypes, genreTypes[0]);
+					String genre = (String) JOptionPane.showInputDialog(contentPanel, "Genre to be Added:","Add Genre",JOptionPane.QUESTION_MESSAGE, null, genreTypes, genreTypes[0]);
 					addedGenres.add(genre);
 					addedGenreBox.addItem(genre);
 				}
@@ -278,15 +278,16 @@ public class EditEnter extends JDialog {
 												.addGroup(gl_contentPanel.createSequentialGroup()
 													.addGroup(gl_contentPanel.createParallelGroup(Alignment.LEADING)
 														.addComponent(addedGenreBox, GroupLayout.PREFERRED_SIZE, 129, GroupLayout.PREFERRED_SIZE)
-														.addComponent(lblGenre, GroupLayout.DEFAULT_SIZE, 129, Short.MAX_VALUE))
-													.addPreferredGap(ComponentPlacement.RELATED)
-													.addGroup(gl_contentPanel.createParallelGroup(Alignment.LEADING)
-														.addComponent(addGenreButton, GroupLayout.PREFERRED_SIZE, 65, GroupLayout.PREFERRED_SIZE)
 														.addGroup(gl_contentPanel.createSequentialGroup()
-															.addComponent(removeGenreButton)
-															.addPreferredGap(ComponentPlacement.RELATED)
-															.addComponent(chckbxNewCheckBox)))
-													.addGap(131))
+															.addComponent(lblGenre, GroupLayout.DEFAULT_SIZE, 54, Short.MAX_VALUE)
+															.addGap(75)))
+													.addPreferredGap(ComponentPlacement.RELATED)
+													.addGroup(gl_contentPanel.createParallelGroup(Alignment.TRAILING)
+														.addComponent(removeGenreButton)
+														.addComponent(chckbxNewCheckBox))
+													.addPreferredGap(ComponentPlacement.RELATED)
+													.addComponent(addGenreButton, GroupLayout.PREFERRED_SIZE, 65, GroupLayout.PREFERRED_SIZE)
+													.addGap(137))
 												.addComponent(releaseField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 												.addComponent(releaseLabel)
 												.addGroup(gl_contentPanel.createSequentialGroup()
@@ -329,12 +330,12 @@ public class EditEnter extends JDialog {
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addGroup(gl_contentPanel.createParallelGroup(Alignment.BASELINE)
 						.addComponent(lblGenre, GroupLayout.PREFERRED_SIZE, 14, GroupLayout.PREFERRED_SIZE)
-						.addComponent(addGenreButton))
+						.addComponent(chckbxNewCheckBox))
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addGroup(gl_contentPanel.createParallelGroup(Alignment.BASELINE)
 						.addComponent(addedGenreBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 						.addComponent(removeGenreButton)
-						.addComponent(chckbxNewCheckBox))
+						.addComponent(addGenreButton))
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addGroup(gl_contentPanel.createParallelGroup(Alignment.BASELINE)
 						.addComponent(authorLabel)
@@ -353,14 +354,18 @@ public class EditEnter extends JDialog {
 						.addComponent(releaseField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 						.addComponent(textField_4, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 						.addComponent(textField_5, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-					.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-					.addGroup(gl_contentPanel.createParallelGroup(Alignment.BASELINE)
-						.addComponent(textField_6, GroupLayout.PREFERRED_SIZE, 22, GroupLayout.PREFERRED_SIZE)
-						.addComponent(urlLabel))
-					.addGap(5)
+					.addGroup(gl_contentPanel.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_contentPanel.createSequentialGroup()
+							.addPreferredGap(ComponentPlacement.RELATED, 12, Short.MAX_VALUE)
+							.addComponent(urlLabel)
+							.addGap(14))
+						.addGroup(gl_contentPanel.createSequentialGroup()
+							.addPreferredGap(ComponentPlacement.UNRELATED)
+							.addComponent(textField_6, GroupLayout.PREFERRED_SIZE, 22, GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(ComponentPlacement.RELATED)))
 					.addComponent(lblNewLabel_2)
 					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(textArea, GroupLayout.DEFAULT_SIZE, 87, Short.MAX_VALUE))
+					.addComponent(textArea, GroupLayout.DEFAULT_SIZE, 92, Short.MAX_VALUE))
 		);
 		contentPanel.setLayout(gl_contentPanel);
 		

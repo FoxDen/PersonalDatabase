@@ -30,6 +30,10 @@ import java.awt.event.ActionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.event.ListSelectionEvent;
 import java.awt.Font;
+import javax.swing.JComboBox;
+import javax.swing.DefaultComboBoxModel;
+import java.awt.event.ItemListener;
+import java.awt.event.ItemEvent;
 
 public class SearchThing extends JDialog {
 
@@ -38,9 +42,14 @@ public class SearchThing extends JDialog {
 	 */
 	private static final long serialVersionUID = 1L;
 	private final JPanel contentPanel = new JPanel();
-	private JTextField textField;
-	private JTextField textField_1;
-	private JTextField textField_2;
+	private JTextField titleField;
+	private JTextField creatorField;
+	private JTextField releaseField;
+	private JComboBox<String> typeBox;
+	
+	private JLabel primaryKeySearchLabel;
+	private JLabel titleLabel;
+	private JLabel releaseLabel;
 
 	/**
 	 * Launch the application.
@@ -69,23 +78,22 @@ public class SearchThing extends JDialog {
 		SpringLayout sl_contentPanel = new SpringLayout();
 		contentPanel.setLayout(sl_contentPanel);
 		
-		JScrollPane scrollPane = new JScrollPane();
-		sl_contentPanel.putConstraint(SpringLayout.NORTH, scrollPane, 0, SpringLayout.NORTH, contentPanel);
-		sl_contentPanel.putConstraint(SpringLayout.WEST, scrollPane, 310, SpringLayout.WEST, contentPanel);
-		sl_contentPanel.putConstraint(SpringLayout.SOUTH, scrollPane, 200, SpringLayout.NORTH, contentPanel);
-		sl_contentPanel.putConstraint(SpringLayout.EAST, scrollPane, -5, SpringLayout.EAST, contentPanel);
-		scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-		contentPanel.add(scrollPane);
+		JScrollPane scrollPaneOfGenres = new JScrollPane();
+		sl_contentPanel.putConstraint(SpringLayout.NORTH, scrollPaneOfGenres, 0, SpringLayout.NORTH, contentPanel);
+		sl_contentPanel.putConstraint(SpringLayout.WEST, scrollPaneOfGenres, 315, SpringLayout.WEST, contentPanel);
+		sl_contentPanel.putConstraint(SpringLayout.EAST, scrollPaneOfGenres, 0, SpringLayout.EAST, contentPanel);
+		scrollPaneOfGenres.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+		scrollPaneOfGenres.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		contentPanel.add(scrollPaneOfGenres);
 		
-		JList list = new JList();
-		list.setBackground(new Color(255, 250, 240));
-		list.addListSelectionListener(new ListSelectionListener() {
+		JList listOfGenres = new JList();
+		listOfGenres.setBackground(new Color(255, 250, 240));
+		listOfGenres.addListSelectionListener(new ListSelectionListener() {
 			public void valueChanged(ListSelectionEvent arg0) {
 			}
 		});
-		scrollPane.setViewportView(list);
-		list.setModel(new AbstractListModel() {
+		scrollPaneOfGenres.setViewportView(listOfGenres);
+		listOfGenres.setModel(new AbstractListModel() {
 			String[] values = new String[] {"Horror", "Action", "Shojo", "Shonen", "Seinen", "Tragedy", "Angst", "Yaoi", "Yuri", "Genderbending", "Ecchi", "Psychological", 
 					"Sci Fi", "Harem", "Smut", "Supernatural", "Romance", "Comedy","Shooter", "RPG", "Simulation", "Strategy", "Sports", "Casual", "Puzzle"};
 			public int getSize() {
@@ -96,97 +104,128 @@ public class SearchThing extends JDialog {
 			}
 		});
 		
-		JLabel lblNewLabel_2 = new JLabel("Title");
-		sl_contentPanel.putConstraint(SpringLayout.NORTH, lblNewLabel_2, 0, SpringLayout.NORTH, scrollPane);
-		sl_contentPanel.putConstraint(SpringLayout.WEST, lblNewLabel_2, 0, SpringLayout.WEST, contentPanel);
-		contentPanel.add(lblNewLabel_2);
+		titleLabel = new JLabel("Title");
+		sl_contentPanel.putConstraint(SpringLayout.NORTH, titleLabel, 0, SpringLayout.NORTH, contentPanel);
+		sl_contentPanel.putConstraint(SpringLayout.WEST, titleLabel, 0, SpringLayout.WEST, contentPanel);
+		contentPanel.add(titleLabel);
 		
-		textField = new JTextField();
-		textField.setBackground(new Color(255, 250, 240));
-		sl_contentPanel.putConstraint(SpringLayout.NORTH, textField, 6, SpringLayout.SOUTH, lblNewLabel_2);
-		sl_contentPanel.putConstraint(SpringLayout.WEST, textField, 0, SpringLayout.WEST, lblNewLabel_2);
-		sl_contentPanel.putConstraint(SpringLayout.EAST, textField, 214, SpringLayout.WEST, contentPanel);
-		contentPanel.add(textField);
-		textField.setColumns(10);
+		titleField = new JTextField();
+		sl_contentPanel.putConstraint(SpringLayout.NORTH, titleField, 6, SpringLayout.SOUTH, titleLabel);
+		sl_contentPanel.putConstraint(SpringLayout.WEST, titleField, 0, SpringLayout.WEST, titleLabel);
+		titleField.setBackground(new Color(255, 250, 240));
+		contentPanel.add(titleField);
+		titleField.setColumns(10);
 		
-		JLabel lblNewLabel_3 = new JLabel("Developer/Mangaka");
-		sl_contentPanel.putConstraint(SpringLayout.NORTH, lblNewLabel_3, 6, SpringLayout.SOUTH, textField);
-		sl_contentPanel.putConstraint(SpringLayout.WEST, lblNewLabel_3, 0, SpringLayout.WEST, lblNewLabel_2);
-		contentPanel.add(lblNewLabel_3);
+		primaryKeySearchLabel = new JLabel("Developer/Mangaka");
+		sl_contentPanel.putConstraint(SpringLayout.NORTH, primaryKeySearchLabel, 48, SpringLayout.NORTH, contentPanel);
+		sl_contentPanel.putConstraint(SpringLayout.WEST, primaryKeySearchLabel, 0, SpringLayout.WEST, titleLabel);
+		contentPanel.add(primaryKeySearchLabel);
 		
-		textField_1 = new JTextField();
-		textField_1.setBackground(new Color(255, 250, 240));
-		sl_contentPanel.putConstraint(SpringLayout.NORTH, textField_1, 8, SpringLayout.SOUTH, lblNewLabel_3);
-		sl_contentPanel.putConstraint(SpringLayout.WEST, textField_1, 0, SpringLayout.WEST, lblNewLabel_2);
-		sl_contentPanel.putConstraint(SpringLayout.EAST, textField_1, 0, SpringLayout.EAST, textField);
-		contentPanel.add(textField_1);
-		textField_1.setColumns(10);
+		creatorField = new JTextField();
+		sl_contentPanel.putConstraint(SpringLayout.NORTH, creatorField, 6, SpringLayout.SOUTH, primaryKeySearchLabel);
+		sl_contentPanel.putConstraint(SpringLayout.WEST, creatorField, 0, SpringLayout.WEST, titleLabel);
+		sl_contentPanel.putConstraint(SpringLayout.EAST, creatorField, 0, SpringLayout.EAST, titleField);
+		creatorField.setBackground(new Color(255, 250, 240));
+		contentPanel.add(creatorField);
+		creatorField.setColumns(10);
 		
-		JLabel lblNewLabel_4 = new JLabel("Release");
-		sl_contentPanel.putConstraint(SpringLayout.NORTH, lblNewLabel_4, 0, SpringLayout.NORTH, lblNewLabel_3);
-		contentPanel.add(lblNewLabel_4);
+		releaseLabel = new JLabel("Release");
+		sl_contentPanel.putConstraint(SpringLayout.NORTH, releaseLabel, 0, SpringLayout.NORTH, primaryKeySearchLabel);
+		contentPanel.add(releaseLabel);
 		
-		textField_2 = new JTextField();
-		textField_2.setBackground(new Color(255, 250, 240));
-		sl_contentPanel.putConstraint(SpringLayout.WEST, lblNewLabel_4, 0, SpringLayout.WEST, textField_2);
-		sl_contentPanel.putConstraint(SpringLayout.NORTH, textField_2, 0, SpringLayout.NORTH, textField_1);
-		sl_contentPanel.putConstraint(SpringLayout.WEST, textField_2, 6, SpringLayout.EAST, textField_1);
-		sl_contentPanel.putConstraint(SpringLayout.EAST, textField_2, 77, SpringLayout.EAST, textField_1);
-		contentPanel.add(textField_2);
-		textField_2.setColumns(10);
+		releaseField = new JTextField();
+		sl_contentPanel.putConstraint(SpringLayout.WEST, releaseField, 6, SpringLayout.EAST, creatorField);
+		sl_contentPanel.putConstraint(SpringLayout.EAST, releaseField, -56, SpringLayout.WEST, scrollPaneOfGenres);
+		sl_contentPanel.putConstraint(SpringLayout.WEST, releaseLabel, 0, SpringLayout.WEST, releaseField);
+		sl_contentPanel.putConstraint(SpringLayout.NORTH, releaseField, 0, SpringLayout.NORTH, creatorField);
+		releaseField.setBackground(new Color(255, 250, 240));
+		contentPanel.add(releaseField);
+		releaseField.setColumns(10);
 		{
 			JPanel panel = new JPanel();
 			panel.setBackground(new Color(255, 204, 204));
 			getContentPane().add(panel, BorderLayout.NORTH);
 			panel.setLayout(new BorderLayout(0, 0));
 			{
-				JLabel lblNewLabel_1 = new JLabel("Genres                   ");
-				panel.add(lblNewLabel_1, BorderLayout.EAST);
+				JLabel genresLabel = new JLabel("Genres                   ");
+				panel.add(genresLabel, BorderLayout.EAST);
 			}
 			
-			JLabel lblCtrlclickWillSelect = new JLabel("CTRL-Click will select multiple individual genres.");
-			lblCtrlclickWillSelect.setFont(new Font("Tw Cen MT", Font.PLAIN, 11));
-			panel.add(lblCtrlclickWillSelect, BorderLayout.WEST);
+			JLabel descriptionLabel = new JLabel("CTRL-Click will select multiple individual genres.");
+			descriptionLabel.setFont(new Font("Tw Cen MT", Font.PLAIN, 11));
+			panel.add(descriptionLabel, BorderLayout.WEST);
 			
-			JButton btnSearchByTitle = new JButton("Search by Title");
-			btnSearchByTitle.setBackground(new Color(255, 245, 238));
-			btnSearchByTitle.addActionListener(new ActionListener() {
+			JButton searchTitleButton = new JButton("Search by Title");
+			searchTitleButton.setBackground(new Color(255, 245, 238));
+			searchTitleButton.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 				}
 			});
-			contentPanel.add(btnSearchByTitle);
+			contentPanel.add(searchTitleButton);
 			
-			JButton btnNewButton = new JButton("Search by Creator");
-			sl_contentPanel.putConstraint(SpringLayout.WEST, btnSearchByTitle, 6, SpringLayout.EAST, btnNewButton);
-			btnNewButton.setBackground(new Color(255, 245, 238));
-			btnNewButton.addActionListener(new ActionListener() {
+			JButton searchReleaseDateButton = new JButton("Search by Creator");
+			sl_contentPanel.putConstraint(SpringLayout.NORTH, searchTitleButton, 0, SpringLayout.NORTH, searchReleaseDateButton);
+			sl_contentPanel.putConstraint(SpringLayout.WEST, searchTitleButton, 6, SpringLayout.EAST, searchReleaseDateButton);
+			sl_contentPanel.putConstraint(SpringLayout.WEST, searchReleaseDateButton, 0, SpringLayout.WEST, titleLabel);
+			searchReleaseDateButton.setBackground(new Color(255, 245, 238));
+			searchReleaseDateButton.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
+					//store sql code here
 				}
 			});
-			sl_contentPanel.putConstraint(SpringLayout.NORTH, btnSearchByTitle, 0, SpringLayout.NORTH, btnNewButton);
-			sl_contentPanel.putConstraint(SpringLayout.WEST, btnNewButton, 0, SpringLayout.WEST, lblNewLabel_2);
-			contentPanel.add(btnNewButton);
+			contentPanel.add(searchReleaseDateButton);
 			
-			JButton btnNewButton_1 = new JButton("Search by Genres");
-			btnNewButton_1.setBackground(new Color(255, 245, 238));
-			btnNewButton_1.addActionListener(new ActionListener() {
+			JButton searchGenresButton = new JButton("Search by Genres");
+			sl_contentPanel.putConstraint(SpringLayout.SOUTH, scrollPaneOfGenres, 0, SpringLayout.SOUTH, searchGenresButton);
+			sl_contentPanel.putConstraint(SpringLayout.SOUTH, searchReleaseDateButton, -6, SpringLayout.NORTH, searchGenresButton);
+			searchGenresButton.setBackground(new Color(255, 245, 238));
+			searchGenresButton.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
+					//store sql code here
 				}
 			});
-			sl_contentPanel.putConstraint(SpringLayout.SOUTH, btnNewButton, -16, SpringLayout.NORTH, btnNewButton_1);
-			sl_contentPanel.putConstraint(SpringLayout.WEST, btnNewButton_1, 0, SpringLayout.WEST, lblNewLabel_2);
-			sl_contentPanel.putConstraint(SpringLayout.SOUTH, btnNewButton_1, -10, SpringLayout.SOUTH, contentPanel);
-			contentPanel.add(btnNewButton_1);
+			sl_contentPanel.putConstraint(SpringLayout.WEST, searchGenresButton, 0, SpringLayout.WEST, titleLabel);
+			sl_contentPanel.putConstraint(SpringLayout.SOUTH, searchGenresButton, -10, SpringLayout.SOUTH, contentPanel);
+			contentPanel.add(searchGenresButton);
 			
-			JButton btnNewButton_2 = new JButton("Search All");
-			sl_contentPanel.putConstraint(SpringLayout.NORTH, btnNewButton_2, 0, SpringLayout.NORTH, btnNewButton_1);
-			sl_contentPanel.putConstraint(SpringLayout.WEST, btnNewButton_2, 0, SpringLayout.WEST, btnSearchByTitle);
-			btnNewButton_2.setBackground(new Color(255, 245, 238));
-			btnNewButton_2.addActionListener(new ActionListener() {
+			JButton searchAllButton = new JButton("Search All");
+			sl_contentPanel.putConstraint(SpringLayout.NORTH, searchAllButton, 0, SpringLayout.NORTH, searchGenresButton);
+			sl_contentPanel.putConstraint(SpringLayout.WEST, searchAllButton, 10, SpringLayout.EAST, searchGenresButton);
+			searchAllButton.setBackground(new Color(255, 245, 238));
+			searchAllButton.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
+					//store sql code here.
 				}
 			});
-			contentPanel.add(btnNewButton_2);
+			contentPanel.add(searchAllButton);
+			
+			JButton releaseDateButton = new JButton("Search by Release Date");
+			sl_contentPanel.putConstraint(SpringLayout.WEST, releaseDateButton, 0, SpringLayout.WEST, titleLabel);
+			sl_contentPanel.putConstraint(SpringLayout.SOUTH, releaseDateButton, -6, SpringLayout.NORTH, searchTitleButton);
+			releaseDateButton.setBackground(new Color(255, 250, 240));
+			contentPanel.add(releaseDateButton);
+			
+			typeBox = new JComboBox();
+			sl_contentPanel.putConstraint(SpringLayout.NORTH, typeBox, 18, SpringLayout.NORTH, contentPanel);
+			sl_contentPanel.putConstraint(SpringLayout.WEST, typeBox, 188, SpringLayout.WEST, contentPanel);
+			sl_contentPanel.putConstraint(SpringLayout.EAST, typeBox, -11, SpringLayout.WEST, scrollPaneOfGenres);
+			sl_contentPanel.putConstraint(SpringLayout.EAST, titleField, -6, SpringLayout.WEST, typeBox);
+			typeBox.setBackground(new Color(255, 250, 240));
+			typeBox.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					String type = (String)typeBox.getSelectedItem();
+					if(type.equals("Manga")){
+						primaryKeySearchLabel.setText("Mangaka");
+					} else if(type.equals("Anime") || type.equals("Cartoon")){
+						primaryKeySearchLabel.setText("Network");
+					} else if(type.equals("Video Game")){
+						primaryKeySearchLabel.setText("Developer");
+					} else
+						primaryKeySearchLabel.setText("Developer/Mangaka");
+				}
+			});
+			typeBox.setModel(new DefaultComboBoxModel(new String[] {"Unknown", "Manga", "Anime", "Video Game", "Cartoon"}));
+			contentPanel.add(typeBox);
 			{
 
 			}

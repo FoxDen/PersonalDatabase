@@ -17,7 +17,21 @@ public class DatabaseBackend {
 		instance = Class.forName("com.mysql.jdbc.Driver").newInstance();
 		
 		connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/animudatabase", username, password);
-		
+		PreparedStatement update;
+		Statement queryStatement = connection.createStatement();
+		update = null;
+			String querys="select * from animuDatabase.mediatype;";
+			ResultSet results = queryStatement.executeQuery(querys);
+			while(results.next()){
+                System.out.print(results.getString("summary"));
+                System.out.print("    ");
+                System.out.print(results.getString("artwork"));
+                System.out.println();
+                System.out.println();
+
+			}
+			update = connection.prepareStatement(querys);
+
 		// TODO Auto-generated method stub
 
 	}

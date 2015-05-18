@@ -41,16 +41,20 @@ import javax.swing.event.ChangeListener;
 import javax.swing.event.ChangeEvent;
 
 import java.awt.Font;
+import javax.swing.JScrollPane;
+import javax.swing.JScrollBar;
+import javax.swing.ScrollPaneConstants;
+import javax.swing.table.DefaultTableModel;
 
 public class GUIDatabase {
 
 	private JFrame frmDatabase;
-	private JTable table;
 	private JPanel descriptionPanel,searchBarPanel, outerPanel; //outermost panels.
 	private JPanel searchPanel, viewMediaPanel, addNewPanel, recentlyViewed, tableDisplay, mediaInfo; //innermost panels
 	private EditEnter addEditWindow = new EditEnter();
 	private SearchThing searchWindow = new SearchThing();
 	private JButton btnDeleteEntry, btnViewSummary, addNew, fullSearch;
+	private JTable table;
 
 	/**
 	 * Launch the application.
@@ -237,8 +241,6 @@ public class GUIDatabase {
 		tableDisplay.setBackground(new Color(255, 240, 245));
 		tableDisplay.setBorder(new LineBorder(new Color(205, 92, 92)));
 		
-		JLabel recentlyReadLabel = new JLabel("Recently Viewed");
-		
 		JLabel IMAGE = new JLabel("IMAGE");
 		
 		mediaInfo = new JPanel();
@@ -248,22 +250,16 @@ public class GUIDatabase {
 		gl_recentlyViewed.setHorizontalGroup(
 			gl_recentlyViewed.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_recentlyViewed.createSequentialGroup()
-					.addGroup(gl_recentlyViewed.createParallelGroup(Alignment.LEADING)
-						.addGroup(gl_recentlyViewed.createSequentialGroup()
-							.addContainerGap()
-							.addComponent(recentlyReadLabel))
-						.addGroup(gl_recentlyViewed.createSequentialGroup()
-							.addGap(32)
-							.addComponent(IMAGE)))
-					.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+					.addGap(32)
+					.addComponent(IMAGE)
+					.addPreferredGap(ComponentPlacement.RELATED, 5, Short.MAX_VALUE)
 					.addComponent(mediaInfo, GroupLayout.PREFERRED_SIZE, 381, GroupLayout.PREFERRED_SIZE)
 					.addGap(30))
 		);
 		gl_recentlyViewed.setVerticalGroup(
 			gl_recentlyViewed.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_recentlyViewed.createSequentialGroup()
-					.addComponent(recentlyReadLabel)
-					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGap(20)
 					.addComponent(IMAGE)
 					.addContainerGap(89, Short.MAX_VALUE))
 				.addComponent(mediaInfo, GroupLayout.DEFAULT_SIZE, 123, Short.MAX_VALUE)
@@ -388,11 +384,6 @@ public class GUIDatabase {
 		sl_mediaInfo.putConstraint(SpringLayout.WEST, authorLabel, 0, SpringLayout.WEST, releaseLabel);
 		mediaInfo.add(authorLabel);
 		recentlyViewed.setLayout(gl_recentlyViewed);
-		
-		//JLabel[] storageArray = {genreLabel1, genreLabel2, genreLabel3, genreLabel4, genreLabel5, genreLabel6};
-		
-		table = new JTable();
-		tableDisplay.add(table);
 		SpringLayout sl_outerPanel = new SpringLayout();
 		sl_outerPanel.putConstraint(SpringLayout.NORTH, recentlyViewed, 12, SpringLayout.NORTH, outerPanel);
 		sl_outerPanel.putConstraint(SpringLayout.WEST, recentlyViewed, 11, SpringLayout.WEST, outerPanel);
@@ -405,6 +396,44 @@ public class GUIDatabase {
 		
 		outerPanel.setLayout(sl_outerPanel);
 		outerPanel.add(tableDisplay);
+		tableDisplay.setLayout(new BorderLayout(0, 0));
+		table = new JTable();
+		table.setModel(new DefaultTableModel(
+			new Object[][] {
+				{null, null, null},
+				{null, null, null},
+				{null, null, null},
+				{null, null, null},
+				{null, null, null},
+				{null, null, null},
+				{null, null, null},
+				{null, null, null},
+				{null, null, null},
+				{null, null, null},
+				{null, null, null},
+				{null, null, null},
+				{null, null, null},
+				{null, null, null},
+				{null, null, null},
+			},
+			new String[] {
+				"Title", "Released", "Creator"
+			}
+		) {
+			boolean[] columnEditables = new boolean[] {
+				false, false, false
+			};
+			public boolean isCellEditable(int row, int column) {
+				return columnEditables[column];
+			}
+		});
+		table.setBackground(new Color(255, 250, 240));
+		JScrollPane scrollPane = new JScrollPane(table);
+		scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+		tableDisplay.add(scrollPane, BorderLayout.CENTER);
+		
+		
+		//tableDisplay.add(table, BorderLayout.NORTH);
 		outerPanel.add(recentlyViewed);
 		frmDatabase.getContentPane().setLayout(groupLayout);
 	
