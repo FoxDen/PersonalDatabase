@@ -48,8 +48,8 @@ public class GUIDatabase {
 	private JTable table;
 	private JPanel descriptionPanel,searchBarPanel, outerPanel; //outermost panels.
 	private JPanel searchPanel, viewMediaPanel, addNewPanel, recentlyViewed, tableDisplay, mediaInfo; //innermost panels
-	private SearchEditEnter addEditWindow = new SearchEditEnter();
-	private Search searchWindow = new Search();
+	private EditEnter addEditWindow = new EditEnter();
+	private SearchThing searchWindow = new SearchThing();
 	private JButton btnDeleteEntry, btnViewSummary, addNew, fullSearch;
 
 	/**
@@ -229,6 +229,7 @@ public class GUIDatabase {
 		);
 		
 		recentlyViewed = new JPanel();
+		recentlyViewed.setBackground(new Color(255, 250, 240));
 		recentlyViewed.setForeground(Color.WHITE);
 		recentlyViewed.setBorder(new LineBorder(new Color(205, 92, 92)));
 		
