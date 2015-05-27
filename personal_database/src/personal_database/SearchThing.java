@@ -95,7 +95,7 @@ public class SearchThing extends JDialog {
 		scrollPaneOfGenres.setViewportView(listOfGenres);
 		listOfGenres.setModel(new AbstractListModel() {
 			String[] values = new String[] {"Horror", "Action", "Shojo", "Shonen", "Seinen", "Tragedy", "Angst", "Yaoi", "Yuri", "Genderbending", "Ecchi", "Psychological", 
-					"Sci Fi", "Harem", "Smut", "Supernatural", "Romance", "Comedy","Shooter", "RPG", "Simulation", "Strategy", "Sports", "Casual", "Puzzle"};
+					"Sci Fi", "Harem", "Smut", "Supernatural", "Mystery", "Romance", "Comedy","Shooter", "RPG", "Simulation", "Strategy", "Sports", "Casual", "Puzzle"};
 			public int getSize() {
 				return values.length;
 			}

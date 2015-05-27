@@ -42,7 +42,7 @@ public class EditEnter extends JDialog {
 	private JComboBox addedGenreBox;
 	private ArrayList<String> addedGenres = new ArrayList<String>();
 	private String[] genreTypes = {"Horror", "Action", "Shojo", "Shonen", "Seinen", "Tragedy", "Angst", "Yaoi", "Yuri", "Genderbending", "Ecchi", "Psychological", 
-									"Sci Fi", "Harem", "Smut", "Supernatural", "Romance", "Comedy"};
+									"Sci Fi", "Harem", "Smut", "Supernatural", "Mystery", "Romance", "Comedy"};
 	private String[] gameGenreTypes = {"Shooter", "RPG", "Simulation", "Strategy", "Sports", "Casual", "Puzzle"};
 	private JTextField textField_4;
 	private JTextField textField_5;
@@ -50,7 +50,7 @@ public class EditEnter extends JDialog {
 	JLabel totalChapters;
 	private JTextField textField_6;
 	private JLabel authorLabel;
-	JTextArea textArea;
+	JTextArea summaryArea;
 	private JLabel urlLabel;
 
 	public void setVisibility(JLabel a, JTextField b, boolean c){
@@ -88,7 +88,7 @@ public class EditEnter extends JDialog {
 		JButton addButton = new JButton("Add");
 		addButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				int textLen = textArea.getText().length()-500;
+				int textLen = summaryArea.getText().length()-500;
 				if(textLen>0){
 					JOptionPane.showMessageDialog(contentPanel, "This summary is too long by " + textLen + " characters. Please trim this down.");
 				
@@ -125,23 +125,27 @@ public class EditEnter extends JDialog {
 					
 					 String cb = (String)mediaTypeBox.getSelectedItem();
 					 if(cb.equals("Cartoon")){
-						 currentChapter.setText("Current Ep:");
-						 totalChapters.setText("Current Season:");
+						 currentChapter.setText("Current Ep");
+						 totalChapters.setText("Current Season");
 						 authorLabel.setText("Network");
 						setVisibility(currentChapter, textField_4, true);
 						setVisibility(totalChapters, textField_5, true);
 						
 					 } else if(cb.equals("Anime")){
-						 urlLabel.setText("Adaptation Of:");
-							textField_6.setColumns(10);
-
+						 urlLabel.setText("Adaptation Of");
+						 textField_6.setColumns(10);
+						 currentChapter.setText("Current Ep");
+						 totalChapters.setText("Current Season");
+						 authorLabel.setText("Studio");
+						setVisibility(currentChapter, textField_4, true);
+						setVisibility(totalChapters, textField_5, true);
 						setVisibility(urlLabel, textField_6, true);		
 						
 					 } else if(cb.equals("Manga")){
 						currentChapter.setText("Current Chapter");
 						totalChapters.setText("Total Chapters");
 						authorLabel.setText("Mangaka");
-						urlLabel.setText("URL:");
+						urlLabel.setText("URL");
 
 						setVisibility(currentChapter, textField_4, true);
 						setVisibility(totalChapters, textField_5, true);
@@ -244,11 +248,11 @@ public class EditEnter extends JDialog {
 		setVisibility(totalChapters, textField_5, false);
 		setVisibility(urlLabel, textField_6, false);
 		
-		textArea = new JTextArea();
-		textArea.setBackground(new Color(255, 250, 240));
-		textArea.setSize(new Dimension(20, 6));
-		textArea.setLineWrap(true);
-		textArea.setDragEnabled(true);
+		summaryArea = new JTextArea();
+		summaryArea.setBackground(new Color(255, 250, 240));
+		summaryArea.setSize(new Dimension(20, 6));
+		summaryArea.setLineWrap(true);
+		summaryArea.setDragEnabled(true);
 	
 
 
@@ -269,7 +273,7 @@ public class EditEnter extends JDialog {
 							.addGroup(gl_contentPanel.createParallelGroup(Alignment.LEADING)
 								.addGroup(gl_contentPanel.createSequentialGroup()
 									.addGap(10)
-									.addComponent(textArea, GroupLayout.PREFERRED_SIZE, 320, GroupLayout.PREFERRED_SIZE))
+									.addComponent(summaryArea, GroupLayout.PREFERRED_SIZE, 320, GroupLayout.PREFERRED_SIZE))
 								.addGroup(gl_contentPanel.createSequentialGroup()
 									.addGroup(gl_contentPanel.createParallelGroup(Alignment.TRAILING)
 										.addComponent(titleLabel, Alignment.LEADING)
@@ -365,7 +369,7 @@ public class EditEnter extends JDialog {
 							.addPreferredGap(ComponentPlacement.RELATED)))
 					.addComponent(lblNewLabel_2)
 					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(textArea, GroupLayout.DEFAULT_SIZE, 92, Short.MAX_VALUE))
+					.addComponent(summaryArea, GroupLayout.DEFAULT_SIZE, 92, Short.MAX_VALUE))
 		);
 		contentPanel.setLayout(gl_contentPanel);
 		

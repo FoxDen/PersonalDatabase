@@ -48,14 +48,20 @@ import javax.swing.table.DefaultTableModel;
 
 public class GUIDatabase {
 
-	private JFrame frmDatabase;
+	JFrame frmDatabase;
 	private JPanel descriptionPanel,searchBarPanel, outerPanel; //outermost panels.
 	private JPanel searchPanel, viewMediaPanel, addNewPanel, recentlyViewed, tableDisplay, mediaInfo; //innermost panels
 	private EditEnter addEditWindow = new EditEnter();
 	private SearchThing searchWindow = new SearchThing();
 	private JButton btnDeleteEntry, btnViewSummary, addNew, fullSearch;
 	private JTable table;
-
+	private String summaryString = "";
+	public JLabel titleOfMediaLabel, genreLabel1, genreLabel2, genreLabel3, genreLabel4, genreLabel5, genreLabel6;
+	public JLabel urlLabel, currentStatusLabel, releaseLabel, authorLabel;
+	
+	public JLabel[] genreLabels = {genreLabel1, genreLabel2, genreLabel3, genreLabel4, genreLabel5, genreLabel6};
+	public JCheckBox chckbxNewCheckBox;
+	//public Object titleOfMediaLabel1;
 	/**
 	 * Launch the application.
 	 */
@@ -77,6 +83,10 @@ public class GUIDatabase {
 	 */
 	public GUIDatabase() {
 		initialize();
+	}
+	
+	public void setSummary(String s){
+		summaryString = s;
 	}
 
 	/**
@@ -267,7 +277,7 @@ public class GUIDatabase {
 		SpringLayout sl_mediaInfo = new SpringLayout();
 		mediaInfo.setLayout(sl_mediaInfo);
 		
-		JLabel titleOfMediaLabel = new JLabel("Title of Media");
+		titleOfMediaLabel = new JLabel("Title of Media");
 		sl_mediaInfo.putConstraint(SpringLayout.NORTH, titleOfMediaLabel, 0, SpringLayout.NORTH, mediaInfo);
 		sl_mediaInfo.putConstraint(SpringLayout.WEST, titleOfMediaLabel, 153, SpringLayout.WEST, mediaInfo);
 		mediaInfo.add(titleOfMediaLabel);
@@ -290,7 +300,7 @@ public class GUIDatabase {
 		sl_mediaInfo.putConstraint(SpringLayout.WEST, authorDev, 0, SpringLayout.WEST, current);
 		mediaInfo.add(authorDev);
 		
-		JCheckBox chckbxNewCheckBox = new JCheckBox("Completed?");
+		chckbxNewCheckBox = new JCheckBox("Completed?");
 		chckbxNewCheckBox.setBackground(new Color(255, 240, 245));
 		chckbxNewCheckBox.setFont(new Font("Consolas", Font.PLAIN, 10));
 		chckbxNewCheckBox.addChangeListener(new ChangeListener() {
@@ -319,66 +329,66 @@ public class GUIDatabase {
 		sl_mediaInfo.putConstraint(SpringLayout.SOUTH, btnViewSummary, -10, SpringLayout.SOUTH, mediaInfo);
 		btnViewSummary.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				JOptionPane.showMessageDialog(frmDatabase, "This will store the summary", "Summary", JOptionPane.PLAIN_MESSAGE);
+				JOptionPane.showMessageDialog(frmDatabase, summaryString, "Summary", JOptionPane.PLAIN_MESSAGE);
 			}
 		});
 		mediaInfo.add(btnViewSummary);
 		
-		JLabel genreLabel1 = new JLabel("New label");
+		genreLabel1 = new JLabel("New label");
 		sl_mediaInfo.putConstraint(SpringLayout.WEST, genreLabel1, 244, SpringLayout.WEST, mediaInfo);
 		genreLabel1.setFont(new Font("Tahoma", Font.PLAIN, 9));
 		sl_mediaInfo.putConstraint(SpringLayout.NORTH, genreLabel1, 0, SpringLayout.NORTH, releaseDate);
 		mediaInfo.add(genreLabel1);
 		
-		JLabel genreLabel2 = new JLabel("New label");
+		genreLabel2 = new JLabel("New label");
 		genreLabel2.setFont(new Font("Tahoma", Font.PLAIN, 9));
 		sl_mediaInfo.putConstraint(SpringLayout.NORTH, genreLabel2, 0, SpringLayout.NORTH, authorDev);
 		sl_mediaInfo.putConstraint(SpringLayout.WEST, genreLabel2, 0, SpringLayout.WEST, genreLabel1);
 		mediaInfo.add(genreLabel2);
 		
-		JLabel genreLabel3 = new JLabel("New label");
+		genreLabel3 = new JLabel("New label");
 		genreLabel3.setFont(new Font("Tahoma", Font.PLAIN, 9));
 		sl_mediaInfo.putConstraint(SpringLayout.NORTH, genreLabel3, 0, SpringLayout.NORTH, chckbxNewCheckBox);
 		sl_mediaInfo.putConstraint(SpringLayout.WEST, genreLabel3, 0, SpringLayout.WEST, genreLabel1);
 		mediaInfo.add(genreLabel3);
 		
-		JLabel genreLabel4 = new JLabel("New label");
+		genreLabel4 = new JLabel("New label");
 		sl_mediaInfo.putConstraint(SpringLayout.NORTH, genreLabel4, -1, SpringLayout.NORTH, releaseDate);
 		sl_mediaInfo.putConstraint(SpringLayout.WEST, genreLabel4, 13, SpringLayout.EAST, genreLabel1);
 		genreLabel4.setFont(new Font("Tahoma", Font.PLAIN, 9));
 		mediaInfo.add(genreLabel4);
 		
-		JLabel genreLabel5 = new JLabel("New label");
+		genreLabel5 = new JLabel("New label");
 		sl_mediaInfo.putConstraint(SpringLayout.NORTH, genreLabel5, -1, SpringLayout.NORTH, authorDev);
 		sl_mediaInfo.putConstraint(SpringLayout.EAST, genreLabel5, 0, SpringLayout.EAST, genreLabel4);
 		genreLabel5.setFont(new Font("Tahoma", Font.PLAIN, 9));
 		mediaInfo.add(genreLabel5);
 		
-		JLabel genreLabel6 = new JLabel("New label");
+		genreLabel6 = new JLabel("New label");
 		sl_mediaInfo.putConstraint(SpringLayout.NORTH, genreLabel6, 0, SpringLayout.NORTH, chckbxNewCheckBox);
 		sl_mediaInfo.putConstraint(SpringLayout.EAST, genreLabel6, 0, SpringLayout.EAST, genreLabel4);
 		genreLabel6.setFont(new Font("Tahoma", Font.PLAIN, 9));
 		mediaInfo.add(genreLabel6);
 		
-		JLabel urlLabel = new JLabel("New label");
+		urlLabel = new JLabel("New label");
 		sl_mediaInfo.putConstraint(SpringLayout.NORTH, urlLabel, -1, SpringLayout.NORTH, current);
 		sl_mediaInfo.putConstraint(SpringLayout.EAST, urlLabel, 0, SpringLayout.EAST, genreLabel1);
 		urlLabel.setFont(new Font("Tahoma", Font.PLAIN, 9));
 		mediaInfo.add(urlLabel);
 		
-		JLabel currentStatusLabel = new JLabel("New label");
+		currentStatusLabel = new JLabel("New label");
 		currentStatusLabel.setFont(new Font("Tahoma", Font.PLAIN, 9));
 		sl_mediaInfo.putConstraint(SpringLayout.NORTH, currentStatusLabel, 0, SpringLayout.NORTH, current);
 		mediaInfo.add(currentStatusLabel);
 		
-		JLabel releaseLabel = new JLabel("New label");
+		releaseLabel = new JLabel("New label");
 		releaseLabel.setFont(new Font("Tahoma", Font.PLAIN, 9));
 		sl_mediaInfo.putConstraint(SpringLayout.EAST, currentStatusLabel, 0, SpringLayout.EAST, releaseLabel);
 		sl_mediaInfo.putConstraint(SpringLayout.WEST, releaseLabel, 25, SpringLayout.EAST, releaseDate);
 		sl_mediaInfo.putConstraint(SpringLayout.SOUTH, releaseLabel, 0, SpringLayout.SOUTH, releaseDate);
 		mediaInfo.add(releaseLabel);
 		
-		JLabel authorLabel = new JLabel("New label");
+		authorLabel = new JLabel("New label");
 		authorLabel.setFont(new Font("Tahoma", Font.PLAIN, 9));
 		sl_mediaInfo.putConstraint(SpringLayout.NORTH, authorLabel, 0, SpringLayout.NORTH, authorDev);
 		sl_mediaInfo.putConstraint(SpringLayout.WEST, authorLabel, 0, SpringLayout.WEST, releaseLabel);
@@ -429,7 +439,6 @@ public class GUIDatabase {
 		});
 		table.setBackground(new Color(255, 250, 240));
 		JScrollPane scrollPane = new JScrollPane(table);
-		scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		tableDisplay.add(scrollPane, BorderLayout.CENTER);
 		
 		
