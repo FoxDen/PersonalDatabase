@@ -49,14 +49,19 @@ public class DatabaseBackend {
 	public static void viewAll(Connection c, String db, String type) throws SQLException{
 		Statement statement = null;
 		String query = "";
-		if(type.equals("anime")){
-			query = "";
+		if(type.equals("manga")){
+			query = "SELECT m_title, release_date, m_mangaka, current_chapter, completed FROM "+
+					db+".manga, "+ db +".mediaType WHERE m_title = title GROUP BY m_title";
 		} else if(type.equals("cartoon")){
-			
+			query = "SELECT c_title, release_date, network, current_season, current_episode, completed FROM "+
+					db+".cartoon, "+ db +".mediaType WHERE c_title = title GROUP BY c_title";
 		} else if(type.equals("game")){
-			
+			query = "SELECT v_title, release_date, game_studio, year_founded, completed FROM "+
+					db+".videogame, "+ db +".mediaType WHERE v_title = title GROUP BY v_title";
 		} else {
-			
+			query = "SELECT a_title, release_date, network, current_season, current_episode, completed FROM "+
+					db+".anime, "+ db +".mediaType "+ db + ".cartoon " + "WHERE a_title = title AND a_title = c.title "
+							+ "GROUP BY m_title";			
 		}
 	}
 
