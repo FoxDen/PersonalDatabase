@@ -1,4 +1,6 @@
 package personal_database;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.sql.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -10,6 +12,7 @@ public class DatabaseBackend {
 	//IMPORTANT MYSQL userName and Password
 	static final String username = "root";
 	static final String password = "10732351";
+	static final String datab = "animuDatabase";
 	private static Connection connection = null;
 	static GUIDatabase window;
 	
@@ -31,19 +34,16 @@ public class DatabaseBackend {
 			if (statement != null) { statement.close();
 			}
 		}
-	
-	}
-	
-	public static void deleteEntry(Connection c, String db) throws SQLException{
-	}
-	
-	public static void searchEntry(Connection c, String db) throws SQLException{
-	}
-	
-	public static void editEntry(Connection c, String db) throws SQLException{
+		
+		statement.close();
+
 	}
 	
 	public static void seeLastEntry(Connection c, String db) throws SQLException{	
+		Statement statement = null;
+		String query = "";
+		ResultSet rs = statement.executeQuery(query);
+		statement.close();
 	}
 	
 	public static void viewAll(Connection c, String db, String type) throws SQLException{
@@ -63,6 +63,67 @@ public class DatabaseBackend {
 					db+".anime, "+ db +".mediaType "+ db + ".cartoon " + "WHERE a_title = title AND a_title = c.title "
 							+ "GROUP BY m_title";			
 		}
+		ResultSet rs = statement.executeQuery(query);
+		statement.close();
+	}
+	
+	public static void addEntry(Connection c, String db) throws SQLException{
+		Statement statement = null;
+		String table_name = EditEnter.getMediaType();
+		String query0 = "INSERT INTO "+ db + ".mediaType VALUES (" + EditEnter.insertIntoMediaType() + ");";
+		String query1 = "INSERT INTO "+ db + "." + table_name + " VALUES " + "(" + EditEnter.entries() + ");";
+		String query2 = "INSERT INTO " + db;
+		String query3 = "";
+		int i = 0;
+						
+		statement = c.createStatement();
+		if(table_name.equals("anime") || table_name.equals("manga") || table_name.equals("videogame")){
+			query2 += EditEnter.otherQueries();
+			System.out.println(query2);
+			int rs2 = statement.executeUpdate(query2);
+		} //executes minor updates to creators.
+		System.out.println(query0);
+		int rs0 = statement.executeUpdate(query0); //executes mediatype
+		int rs1 = statement.executeUpdate(query1); // executes the individual media
+		
+
+		
+		while(i!=EditEnter.getGenres().size()){
+			query3 = "INSERT INTO "+ db + ".genre VALUES ("+EditEnter.getGenres().get(i)+");";
+			System.out.println(query3);
+			int rs3 = statement.executeUpdate(query3);
+			i++;
+		}
+		
+		statement.close();
+		JOptionPane.showMessageDialog(null, "Item successfully added!");
+	}
+	
+	
+	public static void deleteEntry(Connection c, String db) throws SQLException{
+		Statement statement = null;
+		String table_name = "";
+		String title = "";
+		String query = "DROP FROM " + table_name + " WHERE " + db + "title == " + title;
+		
+		statement = c.createStatement();
+		int rs = statement.executeUpdate(query);
+		JOptionPane.showMessageDialog(null, table_name + " deleted.");
+		statement.close();
+	}
+	
+	public static void searchEntry(Connection c, String db) throws SQLException{
+		Statement statement = null;
+		String query = "";
+		ResultSet rs = statement.executeQuery(query);
+		statement.close();
+	}
+	
+	public static void editEntry(Connection c, String db) throws SQLException{
+		Statement statement = null;
+		String query = "";
+		int rs = statement.executeUpdate(query);
+		statement.close();
 	}
 
 	public static void main(String[] args) throws ClassNotFoundException,InstantiationException,
@@ -82,6 +143,20 @@ public class DatabaseBackend {
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
+				
+				EditEnter.addButton.addActionListener(new ActionListener(){
+					@Override
+					public void actionPerformed(ActionEvent arg0) {
+						// TODO Auto-generated method stub
+						try {
+							addEntry(connection,datab);
+						} catch (SQLException e) {
+							// TODO Auto-generated catch block
+							JOptionPane.showMessageDialog(null, "An error occurred.");
+							e.printStackTrace();
+						}
+					}					
+				});
 				String querys="select title, release_date, game_studio, summary, completed from animuDatabase.mediaType, animuDatabase.videoGame WHERE title = \"TES: Skyrim\" AND v_title = \"TES: Skyrim\";";
 				ResultSet results = queryStatement.executeQuery(querys);
 				
@@ -94,20 +169,7 @@ public class DatabaseBackend {
 				}
 				results.close();
 				update = connection.prepareStatement(querys);
-				
-				
-				
-				String genreQuerys = "SELECT genre from animuDatabase.genre WHERE genre_title = \"TES: Skyrim\";";
-				ResultSet res =  queryStatement.executeQuery(genreQuerys);
-				
-				int r=0;
-				while(res.next()){		
-					//window.genreLabels[r].setText(res.getString("genre"));
-					//r++;
-					System.out.print(res.getString("genre"));
-				}
-				update = connection.prepareStatement(genreQuerys);
-			
+
 
 		// TODO Auto-generated method stub
 

@@ -166,6 +166,7 @@ public class GUIDatabase {
 		btnDeleteEntry.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				mediaInfo.setVisible(true);
+				//DatabaseBackend.deleteEntry();
 			}
 		});
 		btnDeleteEntry.setBackground(new Color(255, 245, 238));

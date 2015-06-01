@@ -23,6 +23,7 @@ import javax.swing.JCheckBox;
 import javax.swing.JTextArea;
 
 import java.awt.Dimension;
+
 import javax.swing.UIManager;
 
 public class EditEnter extends JDialog {
@@ -32,31 +33,31 @@ public class EditEnter extends JDialog {
 	 */
 	private static final long serialVersionUID = 4003433170350177974L;
 	private final JPanel contentPanel = new JPanel();
-	private JComboBox<String> mediaTypeBox;
-	private JTextField titleField;
-	private JTextField authorField;
-	private JTextField artworkField;
-	private JTextField releaseField;
-	private String[] mediaTypes = {"Select Media","Cartoon", "Anime", "Game", "Manga"};
+
+	private static JTextField titleField, authorField, artworkField, releaseField, currentField, totalField, textField_6;
+	private static JComboBox<String> mediaTypeBox;
 	@SuppressWarnings("rawtypes")
 	private JComboBox addedGenreBox;
-	private ArrayList<String> addedGenres = new ArrayList<String>();
+	private String[] mediaTypes = {"Select Media","Cartoon", "Anime", "Game", "Manga"};
+	private static ArrayList<String> addedGenres = new ArrayList<String>();
 	private String[] genreTypes = {"Horror", "Action", "Shojo", "Shonen", "Seinen", "Tragedy", "Angst", "Yaoi", "Yuri", "Genderbending", "Ecchi", "Psychological", 
 									"Sci Fi", "Harem", "Smut", "Supernatural", "Mystery", "Romance", "Comedy"};
 	private String[] gameGenreTypes = {"Shooter", "RPG", "Simulation", "Strategy", "Sports", "Casual", "Puzzle"};
-	private JTextField textField_4;
-	private JTextField textField_5;
 	JLabel currentChapter;
 	JLabel totalChapters;
-	private JTextField textField_6;
-	private JLabel authorLabel;
-	JTextArea summaryArea;
-	private JLabel urlLabel;
+	JLabel urlLabel;
+	JLabel authorLabel;
+	
+	private static JTextArea summaryArea;
+	static JButton addButton;
+	static JButton editButton;
+	static JCheckBox completedCheckBox;
 
 	public void setVisibility(JLabel a, JTextField b, boolean c){
 		a.setVisible(c);
 		b.setVisible(c);
 	}
+
 
 	/**
 	 * Launch the application.
@@ -65,12 +66,67 @@ public class EditEnter extends JDialog {
 		try {
 			EditEnter dialog = new EditEnter();
 			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-			dialog.setVisible(true);
-		} catch (Exception e) {
+			dialog.setVisible(true);		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
-
+	public static String getMediaType(){
+		String c = mediaTypeBox.getSelectedItem().toString().toLowerCase();
+		if(c.equals("game")){
+			return "videogame";
+		}
+		return c;
+	}
+	
+	public static String getColumns(){
+		//what i want to do is test out the 
+	}
+	
+	public static String entries(){
+		String entry="";
+		if(getMediaType().equals("anime") || getMediaType().equals("cartoon")){
+			entry = "\"" + titleField.getText() + "\", " + currentField.getText() + ", "+totalField.getText()+", "+"\""+authorField.getText()+"\""; 
+			System.out.println(entry);
+		} else if(getMediaType().equals("manga")){
+			entry = "\"" + titleField.getText() + "\", " + currentField.getText() + ", \""+authorField.getText()+"\", " + totalField.getText() + ", \""+textField_6.getText()+"\"";
+		} else if(getMediaType().equals("videogame")){
+			entry = "\"" + titleField.getText() + "\", \"" + authorField.getText() + "\", \""+addedGenres.get(0)+"\""; 
+		}
+		
+		return entry;
+	}
+	
+	public static ArrayList<String> getGenres(){
+		ArrayList<String> genres = new ArrayList<String>();
+		int i = 0;
+		while(i<addedGenres.size()){
+			genres.add("\""+addedGenres.get(i)+"\", "+"\""+titleField.getText()+"\"");
+			i++;
+		}
+		return genres;
+	}
+	
+	public static String otherQueries(){
+		String otherEntry = "";
+		if(getMediaType().equals("anime")){
+			otherEntry = ".anime VALUES(\""+EditEnter.titleField.getText()+"\" , "+EditEnter.releaseField.getText()+");"; //fix
+		} else if(getMediaType().equals("manga")){
+			otherEntry = ".mangaka VALUES(\""+EditEnter.authorField.getText() + "\");";
+		} else if(getMediaType().equals("")){
+			otherEntry = ".gamestudio VALUES(\""+EditEnter.authorField.getText() + "\");";
+		}
+		return otherEntry;
+	}
+	
+	public static String insertIntoMediaType(){
+		String entry = "";
+		if(!releaseField.getText().equals("")){
+			entry = "\""+titleField.getText() +"\", " + releaseField.getText()+ ", " + Boolean.toString(completedCheckBox.isSelected()) + ", \"" + artworkField.getText()+"\", \""+ summaryArea.getText()+ "\"";
+		} else
+			entry =  "\""+titleField.getText() +"\", " + "0000" + ", " + Boolean.toString(completedCheckBox.isSelected()) + ", \"" + artworkField.getText()+"\", \""+ summaryArea.getText()+ "\"";
+		return entry;
+	}
+	
 	/**
 	 * Create the dialog.
 	 */
@@ -85,7 +141,7 @@ public class EditEnter extends JDialog {
 		SearchEdit.setBackground(new Color(255, 153, 153));
 		getContentPane().add(SearchEdit, BorderLayout.SOUTH);
 		
-		JButton addButton = new JButton("Add");
+		addButton = new JButton("Add");
 		addButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				int textLen = summaryArea.getText().length()-500;
@@ -99,17 +155,16 @@ public class EditEnter extends JDialog {
 				} else if(mediaTypeBox.getSelectedIndex()==0){
 					JOptionPane.showMessageDialog(contentPanel,"The type of media was not selected.");
 					
-				} else
-					JOptionPane.showMessageDialog(contentPanel, "Item Successfully Added!");
+				}
 
 			}
 		});
 		addButton.setBackground(new Color(255, 245, 238));
 		SearchEdit.add(addButton);
 		
-		JButton EditButton = new JButton("Edit");
-		EditButton.setBackground(new Color(255, 245, 238));
-		SearchEdit.add(EditButton);
+		editButton = new JButton("Edit");
+		editButton.setBackground(new Color(255, 245, 238));
+		SearchEdit.add(editButton);
 
 		contentPanel.setBackground(new Color(255, 153, 153));
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -119,8 +174,8 @@ public class EditEnter extends JDialog {
 			mediaTypeBox.setFont(UIManager.getFont("Button.font"));
 			mediaTypeBox.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					setVisibility(currentChapter, textField_4, false);
-					setVisibility(totalChapters, textField_5, false);
+					setVisibility(currentChapter, currentField, false);
+					setVisibility(totalChapters, totalField, false);
 					setVisibility(urlLabel, textField_6,false);
 					
 					 String cb = (String)mediaTypeBox.getSelectedItem();
@@ -128,8 +183,8 @@ public class EditEnter extends JDialog {
 						 currentChapter.setText("Current Ep");
 						 totalChapters.setText("Current Season");
 						 authorLabel.setText("Network");
-						setVisibility(currentChapter, textField_4, true);
-						setVisibility(totalChapters, textField_5, true);
+						setVisibility(currentChapter, currentField, true);
+						setVisibility(totalChapters, totalField, true);
 						
 					 } else if(cb.equals("Anime")){
 						 urlLabel.setText("Adaptation Of");
@@ -137,8 +192,8 @@ public class EditEnter extends JDialog {
 						 currentChapter.setText("Current Ep");
 						 totalChapters.setText("Current Season");
 						 authorLabel.setText("Studio");
-						setVisibility(currentChapter, textField_4, true);
-						setVisibility(totalChapters, textField_5, true);
+						setVisibility(currentChapter, currentField, true);
+						setVisibility(totalChapters, totalField, true);
 						setVisibility(urlLabel, textField_6, true);		
 						
 					 } else if(cb.equals("Manga")){
@@ -147,8 +202,8 @@ public class EditEnter extends JDialog {
 						authorLabel.setText("Mangaka");
 						urlLabel.setText("URL");
 
-						setVisibility(currentChapter, textField_4, true);
-						setVisibility(totalChapters, textField_5, true);
+						setVisibility(currentChapter, currentField, true);
+						setVisibility(totalChapters, totalField, true);
 						setVisibility(urlLabel, textField_6,true);						
 						
 					 } else if(cb.equals("Game")){
@@ -163,7 +218,7 @@ public class EditEnter extends JDialog {
 		
 		JLabel titleLabel = new JLabel("Title");
 		
-		titleField = new JTextField();
+		titleField = new JTextField("");
 		titleField.setBackground(new Color(255, 250, 240));
 		titleField.setColumns(10);
 		
@@ -177,17 +232,25 @@ public class EditEnter extends JDialog {
 		addGenreButton.addActionListener(new ActionListener() {
 			@SuppressWarnings(value = { })
 			public void actionPerformed(ActionEvent arg0) {
+				
 				if(mediaTypeBox.getSelectedIndex()==3){
 					String genre = (String) JOptionPane.showInputDialog(contentPanel, "Genre to be Added:","Add Genre",JOptionPane.QUESTION_MESSAGE, null, gameGenreTypes, gameGenreTypes[0]);
-					addedGenres.add(genre);
-					addedGenreBox.addItem(genre);
+					if(addedGenres.lastIndexOf(genre)!=-1){
+						JOptionPane.showMessageDialog(contentPanel,"The genre is already there.");
+					}else
+						addedGenres.add(genre);
+						addedGenreBox.addItem(genre);
 				} else{
 					String genre = (String) JOptionPane.showInputDialog(contentPanel, "Genre to be Added:","Add Genre",JOptionPane.QUESTION_MESSAGE, null, genreTypes, genreTypes[0]);
-					addedGenres.add(genre);
-					addedGenreBox.addItem(genre);
-				}
+					if(addedGenres.lastIndexOf(genre)!=-1){
+						JOptionPane.showMessageDialog(contentPanel,"The genre is already there.");
+					}else
+						addedGenres.add(genre);
+						addedGenreBox.addItem(genre);
+				} 
 			}
-		});
+		}
+		);
 		
 		JButton removeGenreButton = new JButton("Remove");
 		removeGenreButton.setBackground(new Color(255, 245, 238));
@@ -206,11 +269,11 @@ public class EditEnter extends JDialog {
 		
 		authorLabel = new JLabel("Author");
 		
-		authorField = new JTextField();
+		authorField = new JTextField("");
 		authorField.setBackground(new Color(255, 250, 240));
 		authorField.setColumns(10);
 		
-		artworkField = new JTextField();
+		artworkField = new JTextField("");
 		artworkField.setBackground(new Color(255, 250, 240));
 		artworkField.setColumns(10);
 		
@@ -218,34 +281,34 @@ public class EditEnter extends JDialog {
 		
 		JLabel releaseLabel = new JLabel("Released");
 		
-		releaseField = new JTextField();
+		releaseField = new JTextField("");
 		releaseField.setBackground(new Color(255, 250, 240));
 		releaseField.setColumns(10);
 		
 		JLabel lblNewLabel_2 = new JLabel("Summary");
 		
-		JCheckBox chckbxNewCheckBox = new JCheckBox("Complete?");
-		chckbxNewCheckBox.setForeground(Color.DARK_GRAY);
-		chckbxNewCheckBox.setBackground(new Color(255, 153, 153));
+		completedCheckBox = new JCheckBox("Complete?");
+		completedCheckBox.setForeground(Color.DARK_GRAY);
+		completedCheckBox.setBackground(new Color(255, 153, 153));
 		
 		currentChapter = new JLabel("Init");
 		urlLabel = new JLabel("Init");
 		totalChapters = new JLabel("Init");
 		
-		textField_4 = new JTextField();
-		textField_4.setBackground(new Color(255, 250, 240));
-		textField_4.setColumns(10);
+		currentField = new JTextField("");
+		currentField.setBackground(new Color(255, 250, 240));
+		currentField.setColumns(10);
 		
-		textField_5 = new JTextField();
-		textField_5.setBackground(new Color(255, 250, 240));
-		textField_5.setColumns(10);
+		totalField = new JTextField("");
+		totalField.setBackground(new Color(255, 250, 240));
+		totalField.setColumns(10);
 		
-		textField_6 = new JTextField();
+		textField_6 = new JTextField("");
 		textField_6.setBackground(new Color(255, 250, 240));
 		textField_6.setColumns(10);		
 		
-		setVisibility(currentChapter, textField_4, false);
-		setVisibility(totalChapters, textField_5, false);
+		setVisibility(currentChapter, currentField, false);
+		setVisibility(totalChapters, totalField, false);
 		setVisibility(urlLabel, textField_6, false);
 		
 		summaryArea = new JTextArea();
@@ -288,7 +351,7 @@ public class EditEnter extends JDialog {
 													.addPreferredGap(ComponentPlacement.RELATED)
 													.addGroup(gl_contentPanel.createParallelGroup(Alignment.TRAILING)
 														.addComponent(removeGenreButton)
-														.addComponent(chckbxNewCheckBox))
+														.addComponent(completedCheckBox))
 													.addPreferredGap(ComponentPlacement.RELATED)
 													.addComponent(addGenreButton, GroupLayout.PREFERRED_SIZE, 65, GroupLayout.PREFERRED_SIZE)
 													.addGap(137))
@@ -312,12 +375,12 @@ public class EditEnter extends JDialog {
 																.addGroup(gl_contentPanel.createSequentialGroup()
 																	.addGap(10)
 																	.addGroup(gl_contentPanel.createParallelGroup(Alignment.LEADING)
-																		.addComponent(textField_4, GroupLayout.PREFERRED_SIZE, 44, GroupLayout.PREFERRED_SIZE)
+																		.addComponent(currentField, GroupLayout.PREFERRED_SIZE, 44, GroupLayout.PREFERRED_SIZE)
 																		.addComponent(currentChapter))
 																	.addPreferredGap(ComponentPlacement.UNRELATED)
 																	.addGroup(gl_contentPanel.createParallelGroup(Alignment.LEADING)
 																		.addComponent(totalChapters)
-																		.addComponent(textField_5, GroupLayout.PREFERRED_SIZE, 46, GroupLayout.PREFERRED_SIZE))))))
+																		.addComponent(totalField, GroupLayout.PREFERRED_SIZE, 46, GroupLayout.PREFERRED_SIZE))))))
 													.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
 											.addGap(284)))
 									.addGap(241)))))
@@ -334,7 +397,7 @@ public class EditEnter extends JDialog {
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addGroup(gl_contentPanel.createParallelGroup(Alignment.BASELINE)
 						.addComponent(lblGenre, GroupLayout.PREFERRED_SIZE, 14, GroupLayout.PREFERRED_SIZE)
-						.addComponent(chckbxNewCheckBox))
+						.addComponent(completedCheckBox))
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addGroup(gl_contentPanel.createParallelGroup(Alignment.BASELINE)
 						.addComponent(addedGenreBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
@@ -356,8 +419,8 @@ public class EditEnter extends JDialog {
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addGroup(gl_contentPanel.createParallelGroup(Alignment.BASELINE)
 						.addComponent(releaseField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(textField_4, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(textField_5, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+						.addComponent(currentField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(totalField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 					.addGroup(gl_contentPanel.createParallelGroup(Alignment.LEADING)
 						.addGroup(gl_contentPanel.createSequentialGroup()
 							.addPreferredGap(ComponentPlacement.RELATED, 12, Short.MAX_VALUE)
@@ -374,4 +437,6 @@ public class EditEnter extends JDialog {
 		contentPanel.setLayout(gl_contentPanel);
 		
 	}
+	
+
 }
