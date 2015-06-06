@@ -39,6 +39,10 @@ public class DatabaseBackend {
 
 	}
 	
+	public static void updateTable() throws SQLException{
+
+	}
+	
 	public static void seeLastEntry(Connection c, String db) throws SQLException{	
 		Statement statement = null;
 		String query = "";
@@ -112,17 +116,32 @@ public class DatabaseBackend {
 		statement.close();
 	}
 	
-	public static void searchEntry(Connection c, String db) throws SQLException{
+	public static void searchEntry(Connection c, String db, String searchBy) throws SQLException{
 		Statement statement = null;
-		String query = "";
+		String query = "SELECT * FROM animuDatabase.mediaType, animuDatabase.anime, animuDatabase.cartoon, animuDatabase.manga, animuDatabase.videogame " + "WHERE " +
+		;
 		ResultSet rs = statement.executeQuery(query);
+		
 		statement.close();
 	}
 	
 	public static void editEntry(Connection c, String db) throws SQLException{
 		Statement statement = null;
-		String query = "";
-		int rs = statement.executeUpdate(query);
+		String table_name = EditEnter.getMediaType(); 
+		String queryMedia = "UPDATE " + db + ".mediaType SET ";
+		String querySpecific = "UPDATE "+ db + "." + table_name + " SET ";
+		if(table_name.equals("anime")){
+			querySpecific += "a.title = " + EditEnter.returnField(0) + ", releaseDate = " + EditEnter.returnField(3) + ", adaptationOf = " + EditEnter.returnField(6) 
+							+ " WHERE ";
+		} else if(table_name.equals("manga")){
+			
+		} else if(table_name.equals("videogame")){
+			
+		} else if(table_name.equals("cartoon")){
+			
+		}
+		int rs = statement.executeUpdate(queryMedia);
+		int rs1 = statement.executeUpdate(querySpecific);
 		statement.close();
 	}
 

@@ -43,6 +43,7 @@ public class EditEnter extends JDialog {
 	private String[] genreTypes = {"Horror", "Action", "Shojo", "Shonen", "Seinen", "Tragedy", "Angst", "Yaoi", "Yuri", "Genderbending", "Ecchi", "Psychological", 
 									"Sci Fi", "Harem", "Smut", "Supernatural", "Mystery", "Romance", "Comedy"};
 	private String[] gameGenreTypes = {"Shooter", "RPG", "Simulation", "Strategy", "Sports", "Casual", "Puzzle"};
+	private static JTextField[] fieldRetrieval = {titleField, authorField, artworkField, releaseField, currentField, totalField, textField_6};
 	JLabel currentChapter;
 	JLabel totalChapters;
 	JLabel urlLabel;
@@ -58,6 +59,9 @@ public class EditEnter extends JDialog {
 		b.setVisible(c);
 	}
 
+	public static String returnField(int i){
+		return fieldRetrieval[i].getText();
+	}
 
 	/**
 	 * Launch the application.
@@ -78,15 +82,19 @@ public class EditEnter extends JDialog {
 		return c;
 	}
 	
-	public static String getColumns(){
-		//what i want to do is test out the 
+	public String getColumns(){
+		String columns = "";
+		if(!currentChapter.getText().equals("")){
+			columns += "release_date";
+		}
+		return columns;
 	}
+	
 	
 	public static String entries(){
 		String entry="";
 		if(getMediaType().equals("anime") || getMediaType().equals("cartoon")){
 			entry = "\"" + titleField.getText() + "\", " + currentField.getText() + ", "+totalField.getText()+", "+"\""+authorField.getText()+"\""; 
-			System.out.println(entry);
 		} else if(getMediaType().equals("manga")){
 			entry = "\"" + titleField.getText() + "\", " + currentField.getText() + ", \""+authorField.getText()+"\", " + totalField.getText() + ", \""+textField_6.getText()+"\"";
 		} else if(getMediaType().equals("videogame")){
